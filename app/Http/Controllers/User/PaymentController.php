@@ -21,7 +21,7 @@ class PaymentController extends Controller
             abort(403);
         }
 
-        $paymentInterface = app(PaymentInterface::class);
+        $paymentInterface = app()->make(PaymentInterface::class, ['driver' => $order->getPaymentMethod()]);
         $paymentData = $paymentInterface->process($order);
 
         $viewData = [];

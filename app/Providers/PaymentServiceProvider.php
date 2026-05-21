@@ -13,11 +13,11 @@ class PaymentServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
-        $this->app->bind(PaymentInterface::class, function () {
-            $driver = config('services.payment.driver', 'cheque');
+        $this->app->bind(PaymentInterface::class, function ($app, array $params = []) {
+            $driver = $params['driver'] ?? config('services.payment.driver', 'cheque');
 
             return match ($driver) {
-                'transfer' => new TransferPaymentService,
+                'transfer', 'nequi', 'card' => new TransferPaymentService,
                 default => new ChequePaymentService,
             };
         });

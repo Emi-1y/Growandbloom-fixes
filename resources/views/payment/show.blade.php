@@ -167,7 +167,7 @@
             <form method="POST" action="{{ route('payment.confirm', $viewData['paymentData']['order_id']) }}">
                 @csrf
                 <button type="submit" class="btn btn-success px-4" style="border-radius:8px;">
-                    {{ __('payment.simulate_payment') }}
+                    {{ $viewData['paymentData']['type'] === 'cheque' ? __('payment.simulate_payment_cheque') : __('payment.simulate_payment_transfer') }}
                 </button>
             </form>
         </div>
