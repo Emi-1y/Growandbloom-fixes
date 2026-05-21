@@ -36,7 +36,11 @@ class ServiceController extends Controller
     public function store(StoreServiceRequest $request): RedirectResponse
     {
         try {
-            Service::create($this->prepareServiceData($request->validated()));
+            $validationData = $this->prepareServiceData($request->validated());
+
+            $service = new Service;
+            $service->fill($validationData);
+            $service->save();
         } catch (QueryException) {
             return redirect()->route('admin.service.index')
                 ->with('error', __('service.create_failed'));
@@ -63,7 +67,10 @@ class ServiceController extends Controller
         $service = Service::findOrFail($id);
 
         try {
-            $service->update($this->prepareServiceData($request->validated()));
+            $validationData = $this->prepareServiceData($request->validated());
+
+            $service->fill($validationData);
+            $service->save();
         } catch (QueryException) {
             return redirect()->route('admin.service.index')
                 ->with('error', __('service.update_failed'));

@@ -36,7 +36,11 @@ class PlantController extends Controller
 
     public function store(StorePlantRequest $request): RedirectResponse
     {
-        Plant::create($request->validated());
+        $validationData = $request->validated();
+
+        $plant = new Plant;
+        $plant->fill($validationData);
+        $plant->save();
 
         return redirect()->route('admin.plant.index')->with('success', __('plant.created_successfully'));
     }
@@ -56,8 +60,11 @@ class PlantController extends Controller
 
     public function update(UpdatePlantRequest $request, string $id): RedirectResponse
     {
+        $validationData = $request->validated();
+
         $plant = Plant::findOrFail($id);
-        $plant->update($request->validated());
+        $plant->fill($validationData);
+        $plant->save();
 
         return redirect()->route('admin.plant.index')->with('success', __('plant.updated_successfully'));
     }

@@ -69,8 +69,11 @@ class OrderController extends Controller
 
     public function update(UpdateOrderStatusRequest $request, string $id): RedirectResponse
     {
+        $validationData = $request->validated();
+
         $order = Order::findOrFail($id);
-        $order->update($request->validated());
+        $order->fill($validationData);
+        $order->save();
 
         return redirect()
             ->route('admin.order.index')

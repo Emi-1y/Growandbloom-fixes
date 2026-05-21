@@ -12,15 +12,13 @@ use Illuminate\View\View;
 
 class AlliedPieceController extends Controller
 {
-    private const API_URL = 'http://34.67.107.26/api/pieces';
-
     public function index(): View
     {
         $viewData = [];
         $viewData['title'] = __('allied.title');
 
         try {
-            $response = Http::timeout(5)->get(self::API_URL);
+            $response = Http::timeout(5)->get(config('services.allied.api_url'));
             $viewData['pieces'] = $response->successful() ? $response->json() : [];
             $viewData['error'] = $response->successful() ? null : __('allied.error_fetch');
         } catch (ConnectionException $e) {

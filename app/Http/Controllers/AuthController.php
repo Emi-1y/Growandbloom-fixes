@@ -10,7 +10,7 @@ use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
+
 use Illuminate\View\View;
 
 class AuthController extends Controller
@@ -50,14 +50,16 @@ class AuthController extends Controller
 
     public function register(RegisterRequest $request): RedirectResponse
     {
+        $validated = $request->validated();
+
         $user = User::create([
-            'name' => $request->input('name'),
-            'email' => $request->input('email'),
-            'phone' => $request->input('phone'),
-            'address' => $request->input('address'),
-            'city' => $request->input('city'),
-            'postal_code' => $request->input('postal_code'),
-            'password' => Hash::make($request->input('password')),
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'phone' => $validated['phone'],
+            'address' => $validated['address'],
+            'city' => $validated['city'],
+            'postal_code' => $validated['postal_code'],
+            'password' => $validated['password'],
             'role' => User::ROLE_USER,
         ]);
 

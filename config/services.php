@@ -39,4 +39,8 @@ return [
         'driver' => env('PAYMENT_DRIVER', 'cheque'),
     ],
 
+    'allied' => [
+        'api_url' => env('ALLIED_API_URL', 'http://34.67.107.26/api/pieces'),
+    ],
+
 ];

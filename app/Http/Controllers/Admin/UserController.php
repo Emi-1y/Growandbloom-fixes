@@ -61,7 +61,10 @@ class UserController extends Controller
         $user = User::findOrFail($id);
 
         try {
-            $user->update($request->validated());
+            $validationData = $request->validated();
+
+            $user->fill($validationData);
+            $user->save();
         } catch (QueryException) {
             return redirect()->route('admin.user.index')
                 ->with('error', __('user.update_failed'));
