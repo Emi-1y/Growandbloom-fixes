@@ -35,4 +35,8 @@ return [
         ],
     ],
 
+    'payment' => [
+        'driver' => env('PAYMENT_DRIVER', 'cheque'),
+    ],
+
 ];
