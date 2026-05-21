@@ -39,8 +39,10 @@ class CategoryController extends Controller
         return redirect()->route('admin.category.index')->with('success', __('category.created_successfully'));
     }
 
-    public function edit(Category $category): View
+    public function edit(string $id): View
     {
+        $category = Category::findOrFail($id);
+
         $viewData = [];
         $viewData['title'] = __('category.edit_title');
         $viewData['subtitle'] = __('category.edit_subtitle');
@@ -49,16 +51,19 @@ class CategoryController extends Controller
         return view('admin.category.edit')->with('viewData', $viewData);
     }
 
-    public function update(UpdateCategoryRequest $request, Category $category): RedirectResponse
+    public function update(UpdateCategoryRequest $request, string $id): RedirectResponse
     {
+        $category = Category::findOrFail($id);
         $category->update($request->validated());
 
         return redirect()->route('admin.category.index')->with('success', __('category.updated_successfully'));
     }
 
-    public function destroy(Category $category): RedirectResponse
+    public function destroy(string $id): RedirectResponse
     {
-        if ($category->getPlants()->count() > 0) {
+        $category = Category::findOrFail($id);
+
+        if ($category->plants()->count() > 0) {
             return redirect()
                 ->route('admin.category.index')
                 ->with('error', __('category.delete_blocked'));

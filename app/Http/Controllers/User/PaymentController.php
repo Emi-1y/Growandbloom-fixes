@@ -2,8 +2,9 @@
 
 // Author: Emily Cardona Castañeda
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\User;
 
+use App\Http\Controllers\Controller;
 use App\Interfaces\PaymentInterface;
 use App\Models\Order;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
@@ -14,7 +15,7 @@ class PaymentController extends Controller
 {
     use AuthorizesRequests;
 
-    public function show(int $id): View
+    public function show(string $id): View
     {
         $order = Order::findOrFail($id);
         $this->authorize('view', $order);
@@ -30,7 +31,7 @@ class PaymentController extends Controller
         return view('payment.show')->with('viewData', $viewData);
     }
 
-    public function confirm(int $id): RedirectResponse
+    public function confirm(string $id): RedirectResponse
     {
         $order = Order::findOrFail($id);
         $this->authorize('view', $order);

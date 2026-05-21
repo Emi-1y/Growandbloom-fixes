@@ -2,8 +2,9 @@
 
 // Author: Emily Cardona Castañeda
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\User;
 
+use App\Http\Controllers\Controller;
 use App\Models\Service;
 use Illuminate\View\View;
 

@@ -2,12 +2,8 @@
 
 // Author: Emily Cardona Castañeda
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\Api\PlantApiController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
-
-Route::get('/plants', 'App\Http\Controllers\Api\PlantApiController@index')->name('api.plant.index');
-Route::get('/plants/{id}', 'App\Http\Controllers\Api\PlantApiController@show')->name('api.plant.show');
+Route::get('/plants', [PlantApiController::class, 'index'])->name('api.plant.index');
+Route::get('/plants/{id}', [PlantApiController::class, 'show'])->name('api.plant.show');

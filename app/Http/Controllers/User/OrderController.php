@@ -2,8 +2,9 @@
 
 // Author: Emily Cardona Castañeda
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\User;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\Order\CheckoutRequest;
 use App\Models\Item;
 use App\Models\Order;
@@ -37,7 +38,7 @@ class OrderController extends Controller
         return view('orders.index')->with('viewData', $viewData);
     }
 
-    public function show(int $id): View
+    public function show(string $id): View
     {
         $order = Order::findOrFail($id);
         $this->authorize('view', $order);
@@ -63,7 +64,12 @@ class OrderController extends Controller
         $cartItems = collect();
 
         if (! empty($cart)) {
-            $plants = Plant::with('category')->whereIn('id', array_keys($cart))->where('active', true)->get()->keyBy(fn (Plant $p) => $p->getId());
+            $plants = Plant::with('category')
+                ->whereIn('id', array_keys($cart))
+                ->where('active', true)
+                ->get()
+                ->keyBy(fn (Plant $p) => $p->getId());
+
             foreach ($cart as $plantId => $qty) {
                 if (! isset($plants[$plantId])) {
                     continue;
@@ -81,7 +87,11 @@ class OrderController extends Controller
         }
 
         if (! empty($cartServices)) {
-            $services = Service::whereIn('id', array_keys($cartServices))->where('active', true)->get()->keyBy(fn (Service $s) => $s->getId());
+            $services = Service::whereIn('id', array_keys($cartServices))
+                ->where('active', true)
+                ->get()
+                ->keyBy(fn (Service $s) => $s->getId());
+
             foreach ($cartServices as $serviceId => $qty) {
                 if (! isset($services[$serviceId])) {
                     continue;

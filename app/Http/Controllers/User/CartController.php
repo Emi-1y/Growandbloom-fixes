@@ -2,8 +2,9 @@
 
 // Author: Emily Cardona Castañeda
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\User;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\Cart\AddToCartRequest;
 use App\Http\Requests\Cart\UpdateCartItemRequest;
 use App\Models\Item;
@@ -63,7 +64,7 @@ class CartController extends Controller
         return redirect()->route('cart.index')->with('success', __('cart.plant_added'));
     }
 
-    public function update(UpdateCartItemRequest $request, int $id): RedirectResponse
+    public function update(UpdateCartItemRequest $request, string $id): RedirectResponse
     {
         $activePlant = Plant::where('active', true)->findOrFail($id);
         $quantity = (int) $request->validated('quantity');
@@ -86,7 +87,7 @@ class CartController extends Controller
         return redirect()->route('cart.index')->with('success', __('cart.updated'));
     }
 
-    public function remove(int $id, Request $request): RedirectResponse
+    public function remove(Request $request, string $id): RedirectResponse
     {
         $cart = $request->session()->get(self::CART_KEY, []);
 
@@ -98,7 +99,7 @@ class CartController extends Controller
         return redirect()->route('cart.index')->with('success', __('cart.plant_removed'));
     }
 
-    public function removeService(int $serviceId, Request $request): RedirectResponse
+    public function removeService(Request $request, string $serviceId): RedirectResponse
     {
         $cartServices = $request->session()->get(self::CART_SERVICES_KEY, []);
 
