@@ -16,7 +16,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * $this->attributes['name'] - string - contains the plant name
  * $this->attributes['size'] - string - contains the plant size or presentation
  * $this->attributes['price'] - int - contains the plant price
- * $this->attributes['image'] - string - contains the plant image filename
+ * $this->attributes['image'] - string|null - contains the plant image filename
  * $this->attributes['description'] - string - contains the plant description
  * $this->attributes['color'] - string - contains the plant color or variety
  * $this->attributes['active'] - bool - indicates whether the plant is active

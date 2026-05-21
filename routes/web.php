@@ -57,7 +57,7 @@ Route::middleware('auth')->group(function () {
         Route::put('/update/{id}', [CartController::class, 'update'])->name('cart.update');
         Route::delete('/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
         Route::delete('/clear', [CartController::class, 'clear'])->name('cart.clear');
-        Route::delete('/remove-service/{serviceId}', [CartController::class, 'removeService'])->name('cart.remove.service');
+        Route::delete('/remove-service/{id}', [CartController::class, 'removeService'])->name('cart.remove.service');
     });
 
     // Orders
@@ -76,51 +76,52 @@ Route::middleware('auth')->group(function () {
 // ─── ADMIN ────────────────────────────────────────────────────────────────────
 Route::middleware(['auth', 'checkAdmin'])
     ->prefix('admin')
+    ->name('admin.')
     ->group(function () {
 
-        Route::get('/', [AdminController::class, 'index'])->name('admin.index');
+        Route::get('/', [AdminController::class, 'index'])->name('index');
 
         // Plants
-        Route::prefix('plants')->group(function () {
-            Route::get('/', [AdminPlantController::class, 'index'])->name('admin.plant.index');
-            Route::get('/create', [AdminPlantController::class, 'create'])->name('admin.plant.create');
-            Route::post('/', [AdminPlantController::class, 'store'])->name('admin.plant.store');
-            Route::get('/{id}/edit', [AdminPlantController::class, 'edit'])->name('admin.plant.edit');
-            Route::put('/{id}', [AdminPlantController::class, 'update'])->name('admin.plant.update');
-            Route::delete('/{id}', [AdminPlantController::class, 'destroy'])->name('admin.plant.destroy');
+        Route::prefix('plants')->name('plant.')->group(function () {
+            Route::get('/', [AdminPlantController::class, 'index'])->name('index');
+            Route::get('/create', [AdminPlantController::class, 'create'])->name('create');
+            Route::post('/', [AdminPlantController::class, 'store'])->name('store');
+            Route::get('/{id}/edit', [AdminPlantController::class, 'edit'])->name('edit');
+            Route::put('/{id}', [AdminPlantController::class, 'update'])->name('update');
+            Route::delete('/{id}', [AdminPlantController::class, 'destroy'])->name('destroy');
         });
 
         // Categories
-        Route::prefix('categories')->group(function () {
-            Route::get('/', [AdminCategoryController::class, 'index'])->name('admin.category.index');
-            Route::get('/create', [AdminCategoryController::class, 'create'])->name('admin.category.create');
-            Route::post('/', [AdminCategoryController::class, 'store'])->name('admin.category.store');
-            Route::get('/{id}/edit', [AdminCategoryController::class, 'edit'])->name('admin.category.edit');
-            Route::put('/{id}', [AdminCategoryController::class, 'update'])->name('admin.category.update');
-            Route::delete('/{id}', [AdminCategoryController::class, 'destroy'])->name('admin.category.destroy');
+        Route::prefix('categories')->name('category.')->group(function () {
+            Route::get('/', [AdminCategoryController::class, 'index'])->name('index');
+            Route::get('/create', [AdminCategoryController::class, 'create'])->name('create');
+            Route::post('/', [AdminCategoryController::class, 'store'])->name('store');
+            Route::get('/{id}/edit', [AdminCategoryController::class, 'edit'])->name('edit');
+            Route::put('/{id}', [AdminCategoryController::class, 'update'])->name('update');
+            Route::delete('/{id}', [AdminCategoryController::class, 'destroy'])->name('destroy');
         });
 
         // Services
-        Route::prefix('services')->group(function () {
-            Route::get('/', [AdminServiceController::class, 'index'])->name('admin.service.index');
-            Route::get('/create', [AdminServiceController::class, 'create'])->name('admin.service.create');
-            Route::post('/', [AdminServiceController::class, 'store'])->name('admin.service.store');
-            Route::get('/{id}/edit', [AdminServiceController::class, 'edit'])->name('admin.service.edit');
-            Route::put('/{id}', [AdminServiceController::class, 'update'])->name('admin.service.update');
-            Route::delete('/{id}', [AdminServiceController::class, 'destroy'])->name('admin.service.destroy');
+        Route::prefix('services')->name('service.')->group(function () {
+            Route::get('/', [AdminServiceController::class, 'index'])->name('index');
+            Route::get('/create', [AdminServiceController::class, 'create'])->name('create');
+            Route::post('/', [AdminServiceController::class, 'store'])->name('store');
+            Route::get('/{id}/edit', [AdminServiceController::class, 'edit'])->name('edit');
+            Route::put('/{id}', [AdminServiceController::class, 'update'])->name('update');
+            Route::delete('/{id}', [AdminServiceController::class, 'destroy'])->name('destroy');
         });
 
         // Orders
-        Route::prefix('orders')->group(function () {
-            Route::get('/', [AdminOrderController::class, 'index'])->name('admin.order.index');
-            Route::get('/{id}/edit', [AdminOrderController::class, 'edit'])->name('admin.order.edit');
-            Route::put('/{id}', [AdminOrderController::class, 'update'])->name('admin.order.update');
+        Route::prefix('orders')->name('order.')->group(function () {
+            Route::get('/', [AdminOrderController::class, 'index'])->name('index');
+            Route::get('/{id}/edit', [AdminOrderController::class, 'edit'])->name('edit');
+            Route::put('/{id}', [AdminOrderController::class, 'update'])->name('update');
         });
 
         // Users
-        Route::prefix('users')->group(function () {
-            Route::get('/', [AdminUserController::class, 'index'])->name('admin.user.index');
-            Route::get('/{id}/edit', [AdminUserController::class, 'edit'])->name('admin.user.edit');
-            Route::put('/{id}', [AdminUserController::class, 'update'])->name('admin.user.update');
+        Route::prefix('users')->name('user.')->group(function () {
+            Route::get('/', [AdminUserController::class, 'index'])->name('index');
+            Route::get('/{id}/edit', [AdminUserController::class, 'edit'])->name('edit');
+            Route::put('/{id}', [AdminUserController::class, 'update'])->name('update');
         });
     });

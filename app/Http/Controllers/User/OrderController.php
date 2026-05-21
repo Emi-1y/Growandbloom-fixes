@@ -10,7 +10,6 @@ use App\Models\Item;
 use App\Models\Order;
 use App\Models\Plant;
 use App\Models\Service;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -18,8 +17,6 @@ use Illuminate\View\View;
 
 class OrderController extends Controller
 {
-    use AuthorizesRequests;
-
     private const CART_KEY = 'shopping_cart';
 
     private const CART_SERVICES_KEY = 'shopping_cart_services';
@@ -41,7 +38,11 @@ class OrderController extends Controller
     public function show(string $id): View
     {
         $order = Order::findOrFail($id);
-        $this->authorize('view', $order);
+
+        if ($order->getUserId() !== (int) Auth::id()) {
+            abort(403);
+        }
+
         $order->loadMissing('items.plant', 'items.service');
 
         $viewData = [];
@@ -129,8 +130,7 @@ class OrderController extends Controller
         }
 
         $paymentMethod = (string) $request->validated('payment_method');
-        $authenticatedUser = Auth::user();
-        $authenticatedUserId = (int) $authenticatedUser->getId();
+        $authenticatedUserId = (int) Auth::id();
 
         $order = new Order;
         $order->setUserId($authenticatedUserId);
