@@ -24,6 +24,7 @@ return [
     'reference' => 'Referencia',
     // shared
     'back_to_order' => '← Volver al comercio',
-    'simulate_payment' => 'Pago con cheque',
+    'simulate_payment_cheque' => 'Pagar con cheque',
+    'simulate_payment_transfer' => 'Confirmar transferencia bancaria',
     'payment_confirmed' => 'Pago simulado correctamente. El estado de tu pedido ha sido actualizado.',
 ];

@@ -19,6 +19,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * $this->attributes['duration'] - string - contains the estimated duration
  * $this->attributes['active'] - bool - indicates whether the service is active
  * $this->attributes['features'] - string - JSON-encoded list of included features
+ * $this->attributes['image'] - string|null - contains the service image filename
  * $this->attributes['created_at'] - timestamp - contains service creation date
  * $this->attributes['updated_at'] - timestamp - contains service update date
  * $this->items - Item[] - contains the associated order items
@@ -115,6 +116,16 @@ class Service extends Model
         $this->attributes['features'] = json_encode($features);
     }
 
+    public function getImage(): ?string
+    {
+        return $this->attributes['image'] ?? null;
+    }
+
+    public function setImage(?string $image): void
+    {
+        $this->attributes['image'] = $image;
+    }
+
     public function getCreatedAt(): string
     {
         return $this->attributes['created_at'];
@@ -138,15 +149,5 @@ class Service extends Model
     public function getFormattedPrice(): string
     {
         return number_format($this->getPrice(), 0, ',', '.').' '.__('plant.currency');
-    }
-
-    public function getImage(): ?string
-    {
-        return $this->attributes['image'] ?? null;
-    }
-
-    public function setImage(?string $image): void
-    {
-        $this->attributes['image'] = $image;
     }
 }

@@ -24,6 +24,7 @@ return [
     'reference' => 'Reference',
     // shared
     'back_to_order' => '← Back to shop',
-    'simulate_payment' => 'Pay with cheque',
+    'simulate_payment_cheque' => 'Pay with cheque',
+    'simulate_payment_transfer' => 'Confirm bank transfer',
     'payment_confirmed' => 'Payment successfully simulated. Your order status has been updated.',
 ];

@@ -5,6 +5,7 @@
 namespace App\Http\Requests\Cart;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class AddToCartRequest extends FormRequest
 {
@@ -13,22 +14,20 @@ class AddToCartRequest extends FormRequest
         return true;
     }
 
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'item_type' => $this->input('item_type', 'plant'),
+        ]);
+    }
+
     public function rules(): array
     {
-        $itemType = $this->input('item_type', 'plant');
-
-        if ($itemType === 'service') {
-            return [
-                'service_id' => ['required', 'integer', 'exists:services,id'],
-                'quantity' => ['nullable', 'integer', 'min:1'],
-                'item_type' => ['required', 'string', 'in:plant,service'],
-            ];
-        }
-
         return [
-            'plant_id' => ['required', 'integer', 'exists:plants,id'],
-            'quantity' => ['nullable', 'integer', 'min:1'],
-            'item_type' => ['nullable', 'string', 'in:plant,service'],
+            'item_type' => ['required', 'string', 'in:plant,service'],
+            'plant_id' => ['nullable', 'integer', 'required_if:item_type,plant', Rule::exists('plants', 'id')->where('active', true)],
+            'quantity' => ['nullable', 'integer', 'min:1', 'required_if:item_type,plant'],
+            'service_id' => ['nullable', 'integer', 'required_if:item_type,service', Rule::exists('services', 'id')->where('active', true)],
         ];
     }
 }

@@ -24,7 +24,7 @@ class AdminController extends Controller
         $viewData['activePlantsCount'] = Plant::where('active', true)->count();
         $viewData['servicesCount'] = Service::where('active', true)->count();
         $viewData['ordersCount'] = Order::count();
-        $viewData['pendingOrdersCount'] = Order::where('status', 'pending')->count();
+        $viewData['pendingOrdersCount'] = Order::where('status', Order::STATUS_PENDING)->count();
         $viewData['usersCount'] = User::where('role', User::ROLE_USER)->count();
         $viewData['recentOrders'] = Order::with('user')->orderByDesc('id')->limit(5)->get();
 

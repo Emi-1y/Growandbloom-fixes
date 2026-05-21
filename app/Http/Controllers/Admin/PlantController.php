@@ -41,8 +41,10 @@ class PlantController extends Controller
         return redirect()->route('admin.plant.index')->with('success', __('plant.created_successfully'));
     }
 
-    public function edit(Plant $plant): View
+    public function edit(string $id): View
     {
+        $plant = Plant::findOrFail($id);
+
         $viewData = [];
         $viewData['title'] = __('plant.edit_title');
         $viewData['subtitle'] = __('plant.edit_subtitle');
@@ -52,15 +54,17 @@ class PlantController extends Controller
         return view('admin.plant.edit')->with('viewData', $viewData);
     }
 
-    public function update(UpdatePlantRequest $request, Plant $plant): RedirectResponse
+    public function update(UpdatePlantRequest $request, string $id): RedirectResponse
     {
+        $plant = Plant::findOrFail($id);
         $plant->update($request->validated());
 
         return redirect()->route('admin.plant.index')->with('success', __('plant.updated_successfully'));
     }
 
-    public function destroy(Plant $plant): RedirectResponse
+    public function destroy(string $id): RedirectResponse
     {
+        $plant = Plant::findOrFail($id);
         $plant->delete();
 
         return redirect()->route('admin.plant.index')->with('success', __('plant.deleted_successfully'));

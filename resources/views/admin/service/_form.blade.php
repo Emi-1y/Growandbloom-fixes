@@ -1,9 +1,7 @@
-{{-- Author: Emily Cardona Castañeda  --}}
-
-
+{{-- Author: Emily Cardona Castañeda --}}
 <div class="row g-3">
 
-    <div class="col-md-12">
+    <div class="col-12">
         <label for="name" class="form-label">{{ __('service.form_name') }}</label>
         <input type="text" id="name" name="name" class="form-control"
                placeholder="{{ __('service.form_name_placeholder') }}"
@@ -24,7 +22,7 @@
                value="{{ old('duration', $service?->getDuration()) }}">
     </div>
 
-    <div class="col-md-12">
+    <div class="col-12">
         <label for="employee" class="form-label">{{ __('service.form_employee') }}</label>
         <input type="text" id="employee" name="employee" class="form-control"
                placeholder="{{ __('service.form_employee_placeholder') }}"
@@ -43,7 +41,9 @@
         <textarea id="features_text" name="features_text" class="form-control" rows="5"
                   placeholder="{{ __('service.form_features_placeholder') }}"
         >{{ old('features_text', $service ? implode("\n", $service->getFeatures()) : '') }}</textarea>
-        <small class="text-muted" style="font-size:.78rem;">{{ __('service.form_features_hint') }}</small>
+        <small class="text-muted" style="font-size:.78rem; display:block; margin-top:.3rem;">
+            {{ __('service.form_features_hint') }}
+        </small>
     </div>
 
     <div class="col-12">
@@ -62,13 +62,15 @@
         </div>
     </div>
 
-    <div class="col-12 d-flex gap-2 pt-2">
-        <button type="submit" class="btn btn-success px-4" style="border-radius:8px;">
-            {{ $submitText }}
-        </button>
-        <a href="{{ route('admin.service.index') }}" class="btn btn-outline-secondary" style="border-radius:8px;">
-            {{ __('service.form_back') }}
-        </a>
+    <div class="col-12">
+        <div class="admin-form-actions">
+            <button type="submit" class="admin-btn-primary">
+                <i class="bi bi-check-lg" aria-hidden="true"></i> {{ $submitText }}
+            </button>
+            <a href="{{ route('admin.service.index') }}" class="admin-btn-secondary">
+                {{ __('service.form_back') }}
+            </a>
+        </div>
     </div>
 
 </div>

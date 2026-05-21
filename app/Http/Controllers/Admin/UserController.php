@@ -7,6 +7,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\UpdateUserRoleRequest;
 use App\Models\User;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -37,34 +38,44 @@ class UserController extends Controller
         $viewData['users'] = $query->paginate(30)->appends($request->query());
         $viewData['search'] = $search;
         $viewData['role'] = $role;
-        $viewData['roles'] = [
-            'admin' => __('user.role_admin'),
-            'user' => __('user.role_user'),
-        ];
+        $viewData['roles'] = $this->roleOptions();
 
         return view('admin.user.index')->with('viewData', $viewData);
     }
 
-    public function edit(User $user): View
+    public function edit(string $id): View
     {
+        $user = User::findOrFail($id);
+
         $viewData = [];
         $viewData['title'] = __('user.edit_title');
         $viewData['subtitle'] = __('user.edit_subtitle');
         $viewData['user'] = $user;
-        $viewData['roles'] = [
-            'admin' => __('user.role_admin'),
-            'user' => __('user.role_user'),
-        ];
+        $viewData['roles'] = $this->roleOptions();
 
         return view('admin.user.edit')->with('viewData', $viewData);
     }
 
-    public function update(UpdateUserRoleRequest $request, User $user): RedirectResponse
+    public function update(UpdateUserRoleRequest $request, string $id): RedirectResponse
     {
-        $user->update($request->validated());
+        $user = User::findOrFail($id);
 
-        return redirect()
-            ->route('admin.user.index')
+        try {
+            $user->update($request->validated());
+        } catch (QueryException) {
+            return redirect()->route('admin.user.index')
+                ->with('error', __('user.update_failed'));
+        }
+
+        return redirect()->route('admin.user.index')
             ->with('success', __('user.updated_successfully'));
+    }
+
+    private function roleOptions(): array
+    {
+        return [
+            User::ROLE_ADMIN => __('user.role_admin'),
+            User::ROLE_USER => __('user.role_user'),
+        ];
     }
 }

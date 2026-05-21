@@ -12,7 +12,7 @@
             <div>
                 <label for="search" class="form-label">{{ __('order.search') }}</label>
                 <input type="text" id="search" name="search" class="form-control"
-                       placeholder="{{ __('order.search_placeholder') }}" value="{{ $viewData['search'] }}">
+                    placeholder="{{ __('order.search_placeholder') }}" value="{{ $viewData['search'] }}">
             </div>
             <div>
                 <label for="status" class="form-label">{{ __('order.filter_status') }}</label>

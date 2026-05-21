@@ -2,8 +2,9 @@
 
 // Author: Emily Cardona Castañeda
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\User;
 
+use App\Http\Controllers\Controller;
 use App\Models\Plant;
 use App\Services\CurrencyService;
 use Illuminate\Http\Request;
@@ -40,7 +41,7 @@ class PlantController extends Controller
         return view('plants.index')->with('viewData', $viewData);
     }
 
-    public function show(int $id): View
+    public function show(string $id): View
     {
         $plant = Plant::with('category')->where('active', true)->findOrFail($id);
 

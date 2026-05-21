@@ -2,24 +2,26 @@
 
 // Author: Emily Cardona Castañeda
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\User;
 
+use App\Http\Controllers\Controller;
 use App\Interfaces\PaymentInterface;
 use App\Models\Order;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 class PaymentController extends Controller
 {
-    use AuthorizesRequests;
-
-    public function show(int $id): View
+    public function show(string $id): View
     {
         $order = Order::findOrFail($id);
-        $this->authorize('view', $order);
 
-        $paymentInterface = app(PaymentInterface::class);
+        if ($order->getUserId() !== (int) Auth::id()) {
+            abort(403);
+        }
+
+        $paymentInterface = app()->make(PaymentInterface::class, ['driver' => $order->getPaymentMethod()]);
         $paymentData = $paymentInterface->process($order);
 
         $viewData = [];
@@ -30,10 +32,13 @@ class PaymentController extends Controller
         return view('payment.show')->with('viewData', $viewData);
     }
 
-    public function confirm(int $id): RedirectResponse
+    public function confirm(string $id): RedirectResponse
     {
         $order = Order::findOrFail($id);
-        $this->authorize('view', $order);
+
+        if ($order->getUserId() !== (int) Auth::id()) {
+            abort(403);
+        }
 
         $order->pay();
         $order->save();

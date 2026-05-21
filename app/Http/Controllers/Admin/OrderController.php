@@ -52,20 +52,24 @@ class OrderController extends Controller
         return view('admin.order.index')->with('viewData', $viewData);
     }
 
-    public function edit(Order $order): View
+    public function edit(string $id): View
     {
+        $order = Order::findOrFail($id);
+        $order->load('user', 'items.plant', 'items.service');
+
         $viewData = [];
         $viewData['title'] = __('order.edit_title');
         $viewData['subtitle'] = __('order.edit_subtitle');
-        $viewData['order'] = $order->load('user', 'items.plant', 'items.service');
+        $viewData['order'] = $order;
         $viewData['statuses'] = $this->statusOptions();
         $viewData['paymentStatuses'] = $this->paymentStatusOptions();
 
         return view('admin.order.edit')->with('viewData', $viewData);
     }
 
-    public function update(UpdateOrderStatusRequest $request, Order $order): RedirectResponse
+    public function update(UpdateOrderStatusRequest $request, string $id): RedirectResponse
     {
+        $order = Order::findOrFail($id);
         $order->update($request->validated());
 
         return redirect()
