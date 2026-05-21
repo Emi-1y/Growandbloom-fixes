@@ -4,6 +4,7 @@
 
 namespace App\Services;
 
+use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -25,7 +26,7 @@ class CurrencyService
                 if ($response->successful()) {
                     return (float) ($response->json('cop.usd') ?? 0);
                 }
-            } catch (\Exception $e) {
+            } catch (ConnectionException $e) {
                 Log::warning('CurrencyService: API no disponible — '.$e->getMessage());
             }
 
